@@ -415,3 +415,21 @@
     margin-bottom: 0.5rem;
   }
 } 
+.no-data-message {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.no-data-message h2 {
+  color: #dc3545;
+  margin-bottom: 16px;
+}
+
+.no-data-message p {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}

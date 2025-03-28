@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import { waterQualityData as fallbackData } from '../data/waterQualityData';
 import axios from 'axios';
 import '../styles/WaterReportPage.css';
 
@@ -54,18 +53,10 @@ const WaterReportPage = () => {
 			} catch (err) {
 				console.error('Error fetching water report:', err);
 				setError(
-					'Failed to load water report data. Using fallback data.'
+					'Failed to load water quality report data. No water data available for this ZIP code.'
 				);
-				// Use fallback data in case of error
-				// Update the fallback data with the current email and zip code
-				const updatedFallbackData = {
-					...fallbackData,
-					systemInfo: {
-						...fallbackData.systemInfo,
-						location: `${zipCode}, United States`,
-					},
-				};
-				setWaterData(updatedFallbackData);
+				// Don't set fallback data anymore
+				setWaterData(null);
 			} finally {
 				setLoading(false);
 			}
@@ -85,9 +76,114 @@ const WaterReportPage = () => {
 		);
 	}
 
-	// Use fallback data until API data is loaded
-	const data = waterData || fallbackData;
-	const { systemInfo, contaminants, recommendedFilters, sourceInfo } = data;
+	// Show error message if we have no data
+	if (!waterData) {
+		return (
+			<div className='email-wrapper'>
+				<div className='email-container'>
+					<div className='email-header'>
+						<img
+							src='https://placehold.co/200x50/2196f3/white?text=PureWater+'
+							alt='PureWater Plus Logo'
+							className='email-logo'
+						/>
+						<div className='email-meta'>
+							<div>
+								<strong>From:</strong> info@purewaterplus.com
+							</div>
+							<div>
+								<strong>To:</strong> {email}
+							</div>
+							<div>
+								<strong>Subject:</strong> Your Free Water
+								Quality Report - {zipCode}
+							</div>
+							<div>
+								<strong>Date:</strong>{' '}
+								{new Date().toLocaleDateString('en-US', {
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric',
+								})}
+							</div>
+						</div>
+					</div>
+					<div className='email-body'>
+						<div className='error-banner'>
+							No water quality data is available for ZIP code{' '}
+							{zipCode}. Please try a different, valid ZIP code.
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
+	// Check if the API response indicates no data is available
+	if (waterData.dataAvailable === false) {
+		return (
+			<div className='email-wrapper'>
+				<div className='email-container'>
+					<div className='email-header'>
+						<img
+							src='https://placehold.co/200x50/2196f3/white?text=PureWater+'
+							alt='PureWater Plus Logo'
+							className='email-logo'
+						/>
+						<div className='email-meta'>
+							<div>
+								<strong>From:</strong> info@purewaterplus.com
+							</div>
+							<div>
+								<strong>To:</strong> {email}
+							</div>
+							<div>
+								<strong>Subject:</strong> Your Free Water
+								Quality Report - {zipCode}
+							</div>
+							<div>
+								<strong>Date:</strong>{' '}
+								{new Date().toLocaleDateString('en-US', {
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric',
+								})}
+							</div>
+						</div>
+					</div>
+					<div className='email-body'>
+						<div className='email-greeting'>
+							<h1>Your Water Quality Report</h1>
+							<p>Dear Valued Customer,</p>
+							<p>
+								Thank you for requesting your free water quality
+								report from PureWater Plus.
+							</p>
+						</div>
+						<div className='no-data-message'>
+							<h2>No Data Available</h2>
+							<p>
+								We were unable to find water quality data for
+								ZIP code {zipCode}.
+							</p>
+							<p>
+								{waterData.additionalInfo?.note ||
+									waterData.sourceInfo?.disclaimer ||
+									'This may be because the ZIP code is invalid or there are no registered water systems in this area.'}
+							</p>
+							<p>
+								Please try a different ZIP code to receive
+								accurate water quality information.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
+	const { systemInfo, contaminants, recommendedFilters, sourceInfo } =
+		waterData;
 
 	const currentDate = new Date().toLocaleDateString('en-US', {
 		year: 'numeric',
