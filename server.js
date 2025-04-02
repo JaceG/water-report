@@ -2,9 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fetchWaterData = require('./utils/fetchWaterData');
+const fetchEWG = require('./utils/scrapeEwgData');
 const sendEventToKlaviyo = require('./utils/sendEventToKlaviyo');
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -23,7 +22,7 @@ app.post('/api/request-report', async (req, res) => {
 
 	try {
 		// Fetch water data based on location
-		const waterData = await fetchWaterData(location);
+		const waterData = await fetchEWG(location);
 
 		// In a production app, you would:
 		// 1. Store the request in a database
@@ -33,7 +32,7 @@ app.post('/api/request-report', async (req, res) => {
 		try {
 			// Try to send to Klaviyo, but don't let this block the response
 			// if there's an error
-			await sendEventToKlaviyo(email, waterData);
+			await sendEventToKlaviyo(email, location, waterData);
 		} catch (klaviyoError) {
 			console.warn('Failed to send to Klaviyo:', klaviyoError.message);
 			// Continue with the response even if Klaviyo fails
