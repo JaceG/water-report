@@ -1,5 +1,7 @@
 import axios from 'axios';
-import * as cheerio from 'cheerio';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const cheerio = require('cheerio');
 
 const baseUrl = 'https://www.ewg.org/tapwater/search-results.php?zip5=';
 
