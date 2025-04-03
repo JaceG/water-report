@@ -1,15 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Get your free water quality report" />
-  <title>Clean Water Report | Free Analysis of Your Water Quality</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Test Water Report Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+    label { display: block; margin-top: 15px; }
+    input { width: 100%; padding: 8px; }
+    button { margin-top: 20px; padding: 10px 20px; }
+    #result { margin-top: 20px; background: #f4f4f4; padding: 10px; }
+  </style>
 </head>
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <h1>Request Your Water Report</h1>
+  <form id="waterReportForm">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+    
+    <label for="location">ZIP Code:</label>
+    <input type="text" id="location" name="location" placeholder="e.g., 90210" required>
+    
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('waterReportForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Collect form data
+      var email = document.getElementById('email').value;
+      var location = document.getElementById('location').value;
+
+      // Send POST request to your server's endpoint
+      fetch('http://localhost:3000/api/request-report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, location: location })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+      })
+      .catch(error => {
+        document.getElementById('result').innerText = 'Error: ' + error;
+      });
+    });
+  </script>
 </body>
-</html> 
+</html>

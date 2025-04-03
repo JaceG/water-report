@@ -21,31 +21,89 @@ app.post('/api/request-report', async (req, res) => {
 	}
 
 	try {
+		console.log(`Processing request for email: ${email}, location: ${location}`);
+		
 		// Fetch water data based on location
+		console.log(`Fetching water data from EWG for location: ${location}`);
 		const waterData = await fetchEWG(location);
-
-		// In a production app, you would:
-		// 1. Store the request in a database
-		// 2. Send an actual email
-		// 3. Track the event in a marketing automation tool
+		
+		if (!waterData || waterData.length === 0) {
+			console.warn(`No water data found for location: ${location}`);
+			return res.status(404).json({
+				error: 'No water data found for the provided location',
+				message: 'Please check the ZIP code and try again.'
+			});
+		}
+		
+		console.log(`Found ${waterData.length} contaminants for location: ${location}`);
 
 		try {
-			// Try to send to Klaviyo, but don't let this block the response
-			// if there's an error
-			await sendEventToKlaviyo(email, location, waterData);
+			// Try to send to Klaviyo
+			console.log(`Sending data to Klaviyo for email: ${email}`);
+			const klaviyoResponse = await sendEventToKlaviyo(email, location, waterData);
+			console.log(`Successfully sent to Klaviyo:`, klaviyoResponse);
 		} catch (klaviyoError) {
-			console.warn('Failed to send to Klaviyo:', klaviyoError.message);
+			console.error('Failed to send to Klaviyo:', klaviyoError.message);
 			// Continue with the response even if Klaviyo fails
+			
+			// Return a warning in the response that the email might not be sent
+			return res.status(207).json({
+				waterData: waterData,
+				warning: 'Your water report was generated but there was an issue sending the email. Please check your inbox later or try again.'
+			});
 		}
 
 		// Return the water data directly in the response
 		// so the frontend can display it immediately
-		res.status(200).json(waterData);
+		res.status(200).json({
+			success: true,
+			message: 'Water report generated and email sent successfully',
+			data: waterData
+		});
 	} catch (error) {
-		console.error('Error fetching water data:', error);
+		console.error('Error processing water report request:', error);
 		res.status(500).json({
 			error: 'Internal Server Error',
 			message: error.message,
+		});
+	}
+});
+
+// Test endpoint for Klaviyo integration
+app.get('/api/test-klaviyo', async (req, res) => {
+	const testZip = req.query.zip || '90210';  // Default to Beverly Hills, CA
+	const testEmail = req.query.email || 'test@example.com';  // Default test email
+	
+	console.log(`Running Klaviyo test with ZIP: ${testZip}, Email: ${testEmail}`);
+	
+	try {
+		// Fetch water data
+		const waterData = await fetchEWG(testZip);
+		
+		if (!waterData || waterData.length === 0) {
+			return res.status(404).json({
+				error: 'No water data found for this ZIP code',
+				zip: testZip
+			});
+		}
+		
+		// Send to Klaviyo
+		const klaviyoResponse = await sendEventToKlaviyo(testEmail, testZip, waterData);
+		
+		// Return success response
+		res.json({
+			success: true,
+			message: 'Test completed successfully',
+			waterDataSampleCount: waterData.length,
+			waterDataSample: waterData.slice(0, 2),  // Just include a sample of the data
+			klaviyoResponse
+		});
+	} catch (error) {
+		console.error('Test failed:', error);
+		res.status(500).json({
+			error: 'Test failed',
+			message: error.message,
+			stack: process.env.NODE_ENV === 'production' ? null : error.stack
 		});
 	}
 });
@@ -60,6 +118,6 @@ if (process.env.NODE_ENV === 'production') {
 	});
 }
 
-app.listen(PORT, '::', () => {
+app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
