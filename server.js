@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fetchEWG from './utils/scrapeEwgData.js';
+import fetchEWG from './utils/ewgDataFetcher.js';
 import sendEventToKlaviyo from './utils/sendEventToKlaviyo.js';
 
 const __filename = fileURLToPath(import.meta.url);
