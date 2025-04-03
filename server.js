@@ -141,11 +141,11 @@ app.get('/api/test-klaviyo', async (req, res) => {
 	}
 });
 
-// Serve static files from the React app in production
+// Serve static files from the public folder
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, 'public')));
 
-	// For any request that doesn't match the API routes above, serve the React app
+	// For any request that doesn't match the API routes above, serve the HTML page
 	app.get('*', (req, res) => {
 		res.sendFile(path.join(__dirname, 'public', 'index.html'));
 	});

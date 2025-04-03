@@ -17,13 +17,28 @@ async function sendEventToKlaviyo(email, zip, waterData) {
 	// Clean and prepare the contaminant data
 	const cleanedContaminants = waterData.map((contaminant) => ({
 		contaminantName:
-			contaminant.contaminantName?.trim() || 'Unknown Contaminant',
+			(contaminant.contaminantName &&
+				contaminant.contaminantName.trim()) ||
+			'Unknown Contaminant',
 		detectTimesGreaterThan:
-			contaminant.detectTimesGreaterThan?.trim() || '0',
-		thisUtilityText: contaminant.thisUtilityText?.trim() || 'N/A',
-		healthGuidelineText: contaminant.healthGuidelineText?.trim() || 'N/A',
-		legalLimitText: contaminant.legalLimitText?.trim() || 'N/A',
-		potentialEffect: contaminant.potentialEffect?.trim() || 'N/A',
+			(contaminant.detectTimesGreaterThan &&
+				contaminant.detectTimesGreaterThan.trim()) ||
+			'0',
+		thisUtilityText:
+			(contaminant.thisUtilityText &&
+				contaminant.thisUtilityText.trim()) ||
+			'N/A',
+		healthGuidelineText:
+			(contaminant.healthGuidelineText &&
+				contaminant.healthGuidelineText.trim()) ||
+			'N/A',
+		legalLimitText:
+			(contaminant.legalLimitText && contaminant.legalLimitText.trim()) ||
+			'N/A',
+		potentialEffect:
+			(contaminant.potentialEffect &&
+				contaminant.potentialEffect.trim()) ||
+			'N/A',
 	}));
 
 	// Create a completely flattened data structure with top-level properties
