@@ -10,8 +10,8 @@ const LandingPage = () => {
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
 
-	// Get the API URL from environment variables or default to localhost:3000
-	const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+	// Use current window origin instead of hardcoded localhost
+	const API_URL = process.env.REACT_APP_API_URL || window.location.origin;
 
 	// Validate US zip code format (5 digits, optionally followed by dash and 4 more digits)
 	const isValidZipCode = (zip) => {
