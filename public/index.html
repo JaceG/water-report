@@ -1,99 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Test Water Report Form</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
-    label { display: block; margin-top: 15px; }
-    input { width: 100%; padding: 8px; }
-    button { margin-top: 20px; padding: 10px 20px; }
-    #result { margin-top: 20px; background: #f4f4f4; padding: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Report</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f7f9fc;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #1e88e5;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .error {
+            color: #f44336;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Request Your Water Report</h1>
-  <form id="waterReportForm">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+    <header>
+        <div class="container">
+            <h1>Request Your Water Report</h1>
+        </div>
+    </header>
     
-    <label for="location">ZIP Code:</label>
-    <input type="text" id="location" name="location" placeholder="e.g., 90210" required>
-    
-    <button type="submit">Submit</button>
-  </form>
-
-  <div id="result"></div>
-
-  <div style="margin-top: 50px; padding: 20px; border: 1px solid #ccc; max-width: 500px; margin-left: auto; margin-right: auto;">
-    <h2>Direct API Test Form</h2>
-    <form id="direct-test-form">
-      <div style="margin-bottom: 15px;">
-        <label for="test-email">Email:</label>
-        <input type="email" id="test-email" required style="display: block; width: 100%; padding: 8px;">
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label for="test-zip">ZIP Code:</label>
-        <input type="text" id="test-zip" required style="display: block; width: 100%; padding: 8px;">
-      </div>
-      <button type="submit" style="background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer;">
-        Test API Directly
-      </button>
-    </form>
-    <div id="api-response" style="margin-top: 20px; padding: 10px; background: #f5f5f5;"></div>
-  </div>
-
-  <script>
-    document.getElementById('waterReportForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      // Collect form data
-      var email = document.getElementById('email').value;
-      var location = document.getElementById('location').value;
-
-      // Send POST request to your server's endpoint
-      fetch('https://64.23.239.32/api/request-report', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, location: location })
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
-      })
-      .catch(error => {
-        document.getElementById('result').innerText = 'Error: ' + error;
-      });
-    });
-
-    document.getElementById('direct-test-form').addEventListener('submit', async function(event) {
-      event.preventDefault();
-      
-      const email = document.getElementById('test-email').value;
-      const zipCode = document.getElementById('test-zip').value;
-      const responseEl = document.getElementById('api-response');
-      
-      responseEl.innerHTML = 'Sending request...';
-      
-      try {
-        const response = await fetch('/api/request-report', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            location: zipCode
-          })
-        });
+    <div class="container">
+        <div class="form-container">
+            <form id="water-report-form">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required placeholder="your.email@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">ZIP Code:</label>
+                    <input type="text" id="zipCode" required placeholder="e.g., 90210" pattern="^\d{5}(-\d{4})?$">
+                </div>
+                <button type="submit">Get My Water Report</button>
+            </form>
+            <div id="api-response" class="response"></div>
+        </div>
         
-        const data = await response.json();
-        responseEl.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-      } catch (error) {
-        responseEl.innerHTML = 'Error: ' + error.message;
-        console.error('API request failed:', error);
-      }
-    });
-  </script>
+        <footer>
+            <p>&copy; 2023 Water Quality Report. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('water-report-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const zipCode = document.getElementById('zipCode').value;
+            const responseEl = document.getElementById('api-response');
+            
+            responseEl.style.display = 'block';
+            responseEl.innerHTML = 'Processing your request...';
+            responseEl.className = 'response';
+            
+            try {
+                const response = await fetch('/api/request-report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        location: zipCode
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    responseEl.innerHTML = '<h3 class="success">Success!</h3><p>Your water quality report has been generated. Check your email inbox for details.</p>';
+                    responseEl.className = 'response success';
+                } else {
+                    responseEl.innerHTML = `<h3 class="error">Error</h3><p>${data.error || 'There was a problem processing your request.'}</p>`;
+                    responseEl.className = 'response error';
+                }
+            } catch (error) {
+                responseEl.innerHTML = '<h3 class="error">Error</h3><p>There was a problem connecting to the server. Please try again later.</p>';
+                responseEl.className = 'response error';
+                console.error('API request failed:', error);
+            }
+        });
+    </script>
 </body>
 </html>
