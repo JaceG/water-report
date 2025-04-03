@@ -1,5 +1,5 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+import axios from 'axios';
+import cheerio from 'cheerio';
 
 const baseUrl = 'https://www.ewg.org/tapwater/search-results.php?zip5=';
 
@@ -59,4 +59,4 @@ async function fetchEWG(zip) {
 	}
 }
 
-module.exports = fetchEWG;
+export default fetchEWG;
