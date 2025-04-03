@@ -1,5 +1,5 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 
 const baseUrl = 'https://www.ewg.org/tapwater/search-results.php?zip5=';
 
