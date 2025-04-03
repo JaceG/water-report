@@ -34,7 +34,7 @@
       var location = document.getElementById('location').value;
 
       // Send POST request to your server's endpoint
-      fetch('http://localhost:3000/api/request-report', {
+      fetch('https://64.23.239.32/api/request-report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email, location: location })
