@@ -38,13 +38,21 @@ const LandingPage = () => {
 		}
 
 		setLoading(true);
+		console.log('Form submitted with:', { email, zipCode });
+		console.log('API URL:', API_URL);
 
 		try {
 			// Call the actual API endpoint
+			console.log(
+				'Sending POST request to:',
+				`${API_URL}/api/request-report`
+			);
 			const response = await axios.post(`${API_URL}/api/request-report`, {
 				email,
 				location: zipCode,
 			});
+
+			console.log('API response:', response.data);
 
 			// For demo purposes, we'll still navigate to the report page with the form data
 			// instead of waiting for a real email
@@ -57,10 +65,17 @@ const LandingPage = () => {
 				},
 			});
 		} catch (err) {
+			console.error('Error details:', err.message);
+			if (err.response) {
+				console.error(
+					'Server response:',
+					err.response.status,
+					err.response.data
+				);
+			}
 			setError(
 				'There was an error processing your request. Please try again.'
 			);
-			console.error(err);
 		} finally {
 			setLoading(false);
 		}

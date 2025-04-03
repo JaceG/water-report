@@ -13,10 +13,23 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(
+	cors({
+		origin: '*', // Allow all origins for testing
+		methods: ['GET', 'POST'],
+		allowedHeaders: ['Content-Type', 'Authorization'],
+	})
+);
+
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+	console.log(`${req.method} ${req.path}`, req.body);
+	next();
+});
 
 // API endpoint for requesting water reports
 app.post('/api/request-report', async (req, res) => {
+	console.log('Request body:', req.body);
 	const { email, location } = req.body;
 
 	if (!email || !location) {
