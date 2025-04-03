@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 /**
  * Send water quality data to Klaviyo
@@ -91,4 +91,4 @@ async function sendEventToKlaviyo(email, zip, waterData) {
 	}
 }
 
-module.exports = sendEventToKlaviyo;
+export default sendEventToKlaviyo;
