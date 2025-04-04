@@ -10,7 +10,7 @@
 
 	// Configuration - Use the provided URL, or create a protocol-relative URL
 	// Protocol-relative URLs automatically use http: or https: based on the parent page
-	const defaultApiUrl = '//64.23.239.32:3000'; // Notice the '//' without 'http:' or 'https:'
+	const defaultApiUrl = '//www.waterreportapp.com'; // Use the new domain name
 	const API_URL = window.WATER_REPORT_API_URL || defaultApiUrl;
 
 	// CSS Styles for the form
@@ -77,11 +77,11 @@
         <form id="water-report-embed-form">
           <div class="water-report-form-group">
             <label for="water-report-email">Email:</label>
-            <input type="email" id="water-report-email" required placeholder="your.email@example.com">
+            <input type="email" id="water-report-email" required placeholder="your email here">
           </div>
           <div class="water-report-form-group">
             <label for="water-report-zipCode">ZIP Code:</label>
-            <input type="text" id="water-report-zipCode" required placeholder="e.g., 90210" pattern="^\\d{5}(-\\d{4})?$">
+            <input type="text" id="water-report-zipCode" required placeholder="your zip code here" pattern="^\\d{5}(-\\d{4})?$">
           </div>
           <button type="submit">Get My Water Report</button>
         </form>

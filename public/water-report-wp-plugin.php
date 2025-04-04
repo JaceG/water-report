@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Water Quality Report Form
- * Plugin URI: //64.23.239.32:3000
+ * Plugin URI: //www.waterreportapp.com
  * Description: Embeds a water quality report request form that connects to your remote server.
  * Version: 1.0.0
  * Author: Jace Galloway
- * Author URI: https://your-website.com
+ * Author URI: https://hirejace.com
  * Text Domain: water-quality-report
  */
 
@@ -67,7 +67,7 @@ class Water_Quality_Report_Plugin {
         global $post;
         if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'water_report_form')) {
             // API URL from settings (with default fallback)
-            $api_url = get_option('water_report_api_url', '//64.23.239.32:3000');
+            $api_url = get_option('water_report_api_url', '//www.waterreportapp.com');
             
             // Add global API URL variable
             wp_register_script('water-report-config', '', array(), '', true);
@@ -121,8 +121,8 @@ class Water_Quality_Report_Plugin {
                     <tr valign="top">
                         <th scope="row">API Server URL</th>
                         <td>
-                            <input type="url" name="water_report_api_url" value="<?php echo esc_attr(get_option('water_report_api_url', '//64.23.239.32:3000')); ?>" class="regular-text" />
-                            <p class="description">Enter the URL where your water report server is hosted (no trailing slash). Default: //64.23.239.32:3000 (works with both HTTP and HTTPS)</p>
+                            <input type="url" name="water_report_api_url" value="<?php echo esc_attr(get_option('water_report_api_url', '//www.waterreportapp.com')); ?>" class="regular-text" />
+                            <p class="description">Enter the URL where your water report server is hosted (no trailing slash). Default: //www.waterreportapp.com (works with both HTTP and HTTPS)</p>
                         </td>
                     </tr>
                 </table>
