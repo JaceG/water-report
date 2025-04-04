@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Report Embed Demo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            background-color: #f7f9fc;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #1e88e5;
+        }
+        .demo-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: monospace;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        .step {
+            margin-bottom: 30px;
+        }
+        .note {
+            background-color: #fffde7;
+            border-left: 4px solid #fbc02d;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .download-btn {
+            display: inline-block;
+            background-color: #1e88e5;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .download-btn:hover {
+            background-color: #1565c0;
+        }
+        .download-section {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f5f9ff;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            gap: 20px;
+        }
+        .feature {
+            flex: 1 1 200px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+        }
+        .feature h4 {
+            margin-top: 0;
+            color: #1e88e5;
+        }
+    </style>
+    <!-- This line configures the API URL for the embed script -->
+    <script>
+        window.WATER_REPORT_API_URL = '//64.23.239.32:3000';
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Water Report Form Embed Demo</h1>
+        
+        <div class="demo-section">
+            <h2>Live Demo</h2>
+            <p>This is how the water report form will look when embedded on your WordPress site:</p>
+            
+            <!-- The embed container - this is where the form will be injected -->
+            <div data-water-report-embed></div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>WordPress Plugin</h2>
+            <p>The easiest way to add this form to your WordPress site is by using our plugin. It provides a simple shortcode and handles all the necessary script loading automatically.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h4>Easy Installation</h4>
+                    <p>Upload the plugin through your WordPress dashboard and activate it with just a few clicks.</p>
+                </div>
+                <div class="feature">
+                    <h4>Simple Shortcode</h4>
+                    <p>Add the form anywhere using the <code>[water_report_form]</code> shortcode.</p>
+                </div>
+                <div class="feature">
+                    <h4>Settings Panel</h4>
+                    <p>Configure the plugin through a user-friendly settings page in your WordPress admin area.</p>
+                </div>
+            </div>
+            
+            <div class="download-section">
+                <h3>Water Quality Report Form Plugin</h3>
+                <p>One-click installation for WordPress</p>
+                <a href="water-report-wp-plugin.zip" download class="download-btn">Download WordPress Plugin</a>
+            </div>
+            
+            <div class="step">
+                <h3>Plugin Installation</h3>
+                <ol>
+                    <li>Download the plugin using the button above</li>
+                    <li>Go to your WordPress dashboard → Plugins → Add New → Upload Plugin</li>
+                    <li>Choose the downloaded file and click "Install Now"</li>
+                    <li>After installation, click "Activate Plugin"</li>
+                    <li>Go to Settings → Water Report to configure the plugin</li>
+                </ol>
+            </div>
+            
+            <div class="note">
+                <strong>What the plugin does:</strong>
+                <ul>
+                    <li>Creates a <code>[water_report_form]</code> shortcode you can use anywhere on your site</li>
+                    <li>Automatically loads the necessary JavaScript and CSS</li>
+                    <li>Adds a settings page where you can configure the server URL</li>
+                    <li>Properly handles script loading to avoid conflicts with other plugins</li>
+                    <li>Only loads scripts on pages where the shortcode is actually used</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Manual Embedding (Alternative Method)</h2>
+            <p>If you prefer not to use a plugin, you can manually embed the form using these steps:</p>
+            
+            <div class="step">
+                <h3>Step 1: Add the Script to WordPress</h3>
+                <p>Add the following code to your WordPress site's header or footer (via theme settings, a header/footer plugin, or in your child theme):</p>
+                <div class="code-block">
+                    &lt;script&gt;
+                        window.WATER_REPORT_API_URL = '//64.23.239.32:3000';
+                    &lt;/script&gt;
+                    &lt;script src="//64.23.239.32:3000/water-report-embed.js"&gt;&lt;/script&gt;
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>Step 2: Add the Embed Container</h3>
+                <p>Place this div anywhere you want the form to appear in your WordPress content:</p>
+                <div class="code-block">
+                    &lt;div data-water-report-embed&gt;&lt;/div&gt;
+                </div>
+                <p>You can add this to:</p>
+                <ul>
+                    <li>WordPress pages or posts using the HTML/Custom HTML block</li>
+                    <li>WordPress widgets that accept HTML</li>
+                    <li>Theme template files</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h3>Step 3: Creating a WordPress Shortcode (Optional)</h3>
+                <p>For easier embedding, you can create a shortcode by adding this code to your theme's functions.php file or a custom plugin:</p>
+                <div class="code-block">
+                    function water_report_form_shortcode() {
+                        return '&lt;div data-water-report-embed&gt;&lt;/div&gt;';
+                    }
+                    add_shortcode('water_report_form', 'water_report_form_shortcode');
+                </div>
+                <p>Then use it in your content with: <code>[water_report_form]</code></p>
+            </div>
+            
+            <div class="note">
+                <strong>Important:</strong> The form now works with both HTTP and HTTPS using protocol-relative URLs (<code>//64.23.239.32:3000</code>). It will automatically use the same protocol as your WordPress site.
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Additional Resources</h2>
+            <ul>
+                <li><a href="EMBED_INSTRUCTIONS.md" download>Download Complete Documentation</a></li>
+                <li><a href="water-report-embed.js" download>Download Embed Script</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Load the embed script at the end of the body -->
+    <script src="water-report-embed.js"></script>
+</body>
+</html> 
