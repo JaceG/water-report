@@ -1,0 +1,8 @@
+<!-- Water Report Form Snippet -->
+<div data-water-report-embed></div>
+
+{% comment %}
+  Load the Water Report Form scripts
+{% endcomment %}
+{{ 'water-report-config.js' | asset_url | script_tag }}
+<script src="{{ shop.metafields.water_report.api_url | default: '//www.waterreportapp.com' }}/water-report-embed.js"></script> 
