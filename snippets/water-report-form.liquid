@@ -5,4 +5,4 @@
   Load the Water Report Form scripts
 {% endcomment %}
 {{ 'water-report-config.js' | asset_url | script_tag }}
-<script src="{{ shop.metafields.water_report.api_url | default: '//www.waterreportapp.com' }}/water-report-embed.js" defer></script> 
+<script src="{{ shop.metafields.water_report.api_url | default: 'https://www.waterreportapp.com' }}/water-report-embed.js?{{ 'now' | date: '%s' }}" defer></script> 

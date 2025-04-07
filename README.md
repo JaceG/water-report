@@ -129,7 +129,7 @@ MIT
 
 ## Contact
 
-Your Name - your.email@example.com
+Your Name - jace.galloway@gmail.com
 
 ---
 
