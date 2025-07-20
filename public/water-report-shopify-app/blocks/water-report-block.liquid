@@ -1,0 +1,37 @@
+{% comment %}
+  Water Report Form Block
+  This block allows store owners to add the Water Report form as a block
+  to compatible sections.
+{% endcomment %}
+
+<div class="water-report-block">
+  {% if block.settings.title != blank %}
+    <h3 class="water-report-title">{{ block.settings.title }}</h3>
+  {% endif %}
+  
+  {% if block.settings.description != blank %}
+    <div class="water-report-description">{{ block.settings.description }}</div>
+  {% endif %}
+  
+  {% render 'water-report-form' %}
+</div>
+
+{% schema %}
+{
+  "name": "Water Report Form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Check Your Water Quality"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Enter your email and ZIP code to receive a detailed water quality report for your area.</p>"
+    }
+  ]
+}
+{% endschema %} 

@@ -11,7 +11,6 @@ yarn-error.log
 
 # IDE and editor files
 .idea/
-.vscode/
 *.swp
 *.swo
 .DS_Store
@@ -37,3 +36,6 @@ temp/
 
 # Optional REPL history
 .node_repl_history 
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore

@@ -5,21 +5,46 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fetchEWG from './utils/ewgDataFetcher.js';
 import sendEventToKlaviyo from './utils/sendEventToKlaviyo.js';
+import https from 'https';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const HTTP_PORT = process.env.PORT || 3000;
+const HTTPS_PORT = process.env.HTTPS_PORT || 443;
 
 app.use(express.json());
+
+// Enhanced CORS configuration for embedding in WordPress
 app.use(
 	cors({
-		origin: '*', // Allow all origins for testing
+		// In production, you'd want to restrict this to specific domains
+		// For development, allow all origins
+		origin:
+			process.env.NODE_ENV === 'production'
+				? (origin, callback) => {
+						// You can whitelist specific domains here
+						// For example: if (origin === 'https://example.com') { callback(null, true); }
+						// For now, allowing all origins for WordPress embedding
+						callback(null, true);
+				  }
+				: '*',
 		methods: ['GET', 'POST'],
 		allowedHeaders: ['Content-Type', 'Authorization'],
+		credentials: true,
+		// Adding cache headers to improve performance for embedded scripts
+		exposedHeaders: ['Content-Length', 'X-Content-Type-Options'],
 	})
 );
+
+// Set cache headers for the embed script
+app.get('/water-report-embed.js', (req, res, next) => {
+	// Cache for 1 day (in seconds)
+	res.setHeader('Cache-Control', 'public, max-age=86400');
+	next();
+});
 
 // Debug middleware to log all requests
 app.use((req, res, next) => {
@@ -149,8 +174,36 @@ if (process.env.NODE_ENV === 'production') {
 	app.get('*', (req, res) => {
 		res.sendFile(path.join(__dirname, 'public', 'index.html'));
 	});
+} else {
+	// In development, always serve static files
+	app.use(express.static(path.join(__dirname, 'public')));
 }
 
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`);
+// Start HTTP server
+app.listen(HTTP_PORT, () => {
+	console.log(`HTTP Server running on port ${HTTP_PORT}`);
 });
+
+// Try to start HTTPS server if SSL certificates exist
+try {
+	// Check if SSL certificates exist
+	const sslOptions = {
+		key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
+		cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem')),
+	};
+
+	// Create HTTPS server
+	const httpsServer = https.createServer(sslOptions, app);
+
+	httpsServer.listen(HTTPS_PORT, () => {
+		console.log(`HTTPS Server running on port ${HTTPS_PORT}`);
+	});
+} catch (err) {
+	console.log(
+		'SSL certificates not found or invalid, HTTPS server not started'
+	);
+	console.log('Error:', err.message);
+	console.log(
+		'To enable HTTPS, generate SSL certificates in the "ssl" directory'
+	);
+}
