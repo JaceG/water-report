@@ -1,0 +1,42 @@
+{% comment %}
+  Water Report Form Section
+  This section allows store owners to add the Water Report form to any page
+  through the theme editor.
+{% endcomment %}
+
+<div class="page-width">
+  <div class="section-header text-center">
+    <h2>{{ section.settings.title | escape }}</h2>
+    <div class="rte">
+      {{ section.settings.description }}
+    </div>
+  </div>
+
+  {% render 'water-report-form' %}
+</div>
+
+{% schema %}
+{
+  "name": "Water Report Form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Check Your Water Quality"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Enter your email and ZIP code to receive a detailed water quality report for your area.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Water Report Form",
+      "category": "Custom Content"
+    }
+  ]
+}
+{% endschema %} 
